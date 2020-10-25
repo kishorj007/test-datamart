@@ -53,7 +53,7 @@ if __name__ == '__main__':
             ol_txn_df.write \
                 .mode("overwrite") \
                 .partitionBy("ins_dt") \
-                .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
+                .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
 
         elif src == 'CP':
             cp_df = ut.read_from_s3(spark, src_conf) \
