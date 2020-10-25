@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
             txn_df.write \
                 .partitionBy("ins_dt") \
-                .parquet(app_conf["s3_conf"]["staging_dir"] + "/" + src)
+                .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
 
         elif src == 'OL':
             ol_txn_df = ut.read_from_sftp(spark, app_secret, src_conf,
@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
             ol_txn_df.write \
                 .partitionBy("ins_dt") \
-                .parquet(app_conf["s3_conf"]["staging_dir"] + "/" + src)
+                .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
 
         elif src == 'CP':
             cp_df = ut.read_from_s3(spark, src_conf) \
@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
             cp_df.write \
                 .partitionBy("ins_dt") \
-                .parquet(app_conf["s3_conf"]["staging_dir"]+ "/" + "CP")
+                .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
 
         elif src == 'ADDR':
             cust_addr_df = ut.read_from_mongo(spark, app_secret, src_conf) \
@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
             cust_addr_df.write \
                 .partitionBy("ins_dt") \
-                .parquet(app_conf["s3_conf"]["staging_dir"] + "/" + src)
+                .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
 
 
 
