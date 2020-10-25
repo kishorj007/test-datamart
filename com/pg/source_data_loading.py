@@ -39,7 +39,7 @@ if __name__ == '__main__':
             txn_df.write \
                 .mode("append") \
                 .partitionBy("ins_dt") \
-                .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
+                .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
 
         elif src == 'OL':
             ol_txn_df = ut.read_from_sftp(spark, app_secret, src_conf,
@@ -47,8 +47,6 @@ if __name__ == '__main__':
                 .withColumn('ins_dt', current_date())
 
             ol_txn_df.show(5, False)
-            print("output path >>")
-            print(app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
 
             ol_txn_df.write \
                 .mode("overwrite") \
