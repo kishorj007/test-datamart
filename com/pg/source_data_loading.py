@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
         elif src == 'OL':
             ol_txn_df = ut.read_from_sftp(spark, app_secret, src_conf,
-                                          os.path.abspath(current_dir + "/../../../../" + app_secret["sftp_conf"]["pem"])) \
+                                          os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
                 .withColumn('ins_dt', current_date())
 
             ol_txn_df.show(5, False)
