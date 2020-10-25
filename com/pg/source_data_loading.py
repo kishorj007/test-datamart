@@ -47,9 +47,11 @@ if __name__ == '__main__':
                 .withColumn('ins_dt', current_date())
 
             ol_txn_df.show(5, False)
+            print("output path >>")
+            print(app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
 
             ol_txn_df.write \
-                .mode("append") \
+                .mode("overwrite") \
                 .partitionBy("ins_dt") \
                 .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
 
