@@ -37,6 +37,7 @@ if __name__ == '__main__':
             txn_df.show()
 
             txn_df.write \
+                .mode("append") \
                 .partitionBy("ins_dt") \
                 .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
 
@@ -48,14 +49,16 @@ if __name__ == '__main__':
             ol_txn_df.show(5, False)
 
             ol_txn_df.write \
+                .mode("append") \
                 .partitionBy("ins_dt") \
-                .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
+                .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
 
         elif src == 'CP':
             cp_df = ut.read_from_s3(spark, src_conf) \
                 .withColumn('ins_dt', current_date())
 
             cp_df.write \
+                .mode("append") \
                 .partitionBy("ins_dt") \
                 .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
 
@@ -66,6 +69,7 @@ if __name__ == '__main__':
             cust_addr_df.show()
 
             cust_addr_df.write \
+                .mode("append") \
                 .partitionBy("ins_dt") \
                 .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
 
