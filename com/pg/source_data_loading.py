@@ -60,7 +60,7 @@ if __name__ == '__main__':
             cp_df.write \
                 .mode("append") \
                 .partitionBy("ins_dt") \
-                .parquet(app_conf["s3_conf"]["s3_bucket"] + "/" + ["staging_dir"] + "/" + src)
+                .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + + "/" + src)
 
         elif src == 'ADDR':
             cust_addr_df = ut.read_from_mongo(spark, app_secret, src_conf) \
