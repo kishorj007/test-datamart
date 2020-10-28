@@ -58,7 +58,7 @@ if __name__ == '__main__':
                 .withColumn('ins_dt', current_date())
 
             cp_df.write \
-                .mode("append") \
+                .mode("overwrite") \
                 .partitionBy("ins_dt") \
                 .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
 
