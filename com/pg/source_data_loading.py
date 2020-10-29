@@ -69,11 +69,20 @@ if __name__ == '__main__':
                 .withColumn('ins_dt', current_date())
 
             cust_addr_df.printSchema()
+
+            cust_addr_df = cust_addr_df \
+                               .select(col("consumer_id"),
+                                       col("mobile-no"),
+                                       col("address.state").alias("state"),
+                                       col("address.city").alias("city"),
+                                       col("address.street").alias("street"),
+                                       col("ins_dt"))
+
             cust_addr_df.show()
 
-            # cust_addr_df.write \
-            #     .mode("overwrite") \
-            #     .partitionBy("ins_dt") \
-            #     .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
+            cust_addr_df.write \
+                .mode("overwrite") \
+                .partitionBy("ins_dt") \
+                .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4,mysql:mysql-connector-java:8.0.15,com.springml:spark-sftp_2.11:1.1.1,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" com/pg/source_data_loading.py
