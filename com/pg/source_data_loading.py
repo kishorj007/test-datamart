@@ -33,7 +33,7 @@ if __name__ == '__main__':
         src_conf = app_conf[src]
 
         if src == 'SB':
-            print("Start reading data from SB:Mysql database")
+            print("\nStart reading data from SB:Mysql database")
             txn_df = ut.read_from_mysql(spark, app_secret, src_conf) \
                 .withColumn('ins_dt', current_date())
 
@@ -46,7 +46,7 @@ if __name__ == '__main__':
             print("Data loading from SB:Mysql database is completed")
 
         elif src == 'OL':
-            print("Start reading data from OL:SFTP Location")
+            print("\nStart reading data from OL:SFTP Location")
             ol_txn_df = ut.read_from_sftp(spark, app_secret, src_conf,
                                           os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
                 .withColumn('ins_dt', current_date())
@@ -60,7 +60,7 @@ if __name__ == '__main__':
             print("Data loading from OL:SFTP Locationis completed")
 
         elif src == 'CP':
-            print("Start reading data from CP:S3 BUcket")
+            print("\nStart reading data from CP:S3 BUcket")
             cp_df = ut.read_from_s3(spark, src_conf) \
                 .withColumn('ins_dt', current_date())
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             print("Data loading from CP:S3 Bucket is completed")
 
         elif src == 'ADDR':
-            print("Start reading data from Mongo DB")
+            print("\nStart reading data from Mongo DB")
             cust_addr_df = ut.read_from_mongo(spark,src_conf,app_secret) \
                 .withColumn('ins_dt', current_date())
 
