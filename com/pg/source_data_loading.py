@@ -68,6 +68,7 @@ if __name__ == '__main__':
             cust_addr_df = ut.read_from_mongo(spark,src_conf,app_secret) \
                 .withColumn('ins_dt', current_date())
 
+            cust_addr_df.printSchema()
             cust_addr_df.show()
 
             # cust_addr_df.write \
