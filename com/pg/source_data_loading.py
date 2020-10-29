@@ -63,7 +63,7 @@ if __name__ == '__main__':
                 .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
 
         elif src == 'ADDR':
-            cust_addr_df = ut.read_from_mongo(spark,src_conf) \
+            cust_addr_df = ut.read_from_mongo(spark,src_conf,app_secret) \
                 .withColumn('ins_dt', current_date())
 
             cust_addr_df.show()

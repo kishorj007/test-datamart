@@ -48,7 +48,7 @@ def read_from_s3(spark, app_conf):
 
 
 # write a function that takes all the necessary info, read data from s3 and return a dataframe
-def read_from_mongo(spark, app_conf):
+def read_from_mongo(spark, app_conf,app_secret):
      df = spark.read \
         .format("com.mongodb.spark.sql.DefaultSource") \
         .option("database", app_conf["mongodb_config"]["database"]) \
