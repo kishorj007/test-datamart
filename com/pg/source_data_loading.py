@@ -33,6 +33,7 @@ if __name__ == '__main__':
         src_conf = app_conf[src]
 
         if src == 'SB':
+            print("Start reading data from SB:Mysql database")
             txn_df = ut.read_from_mysql(spark, app_secret, src_conf) \
                 .withColumn('ins_dt', current_date())
 
@@ -42,8 +43,10 @@ if __name__ == '__main__':
                 .mode("append") \
                 .partitionBy("ins_dt") \
                 .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
+            print("Data loading from SB:Mysql database is completed")
 
         elif src == 'OL':
+            print("Start reading data from OL:SFTP Location")
             ol_txn_df = ut.read_from_sftp(spark, app_secret, src_conf,
                                           os.path.abspath(current_dir + "/../../" + app_secret["sftp_conf"]["pem"])) \
                 .withColumn('ins_dt', current_date())
@@ -54,8 +57,10 @@ if __name__ == '__main__':
                 .mode("overwrite") \
                 .partitionBy("ins_dt") \
                 .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
+            print("Data loading from OL:SFTP Locationis completed")
 
         elif src == 'CP':
+            print("Start reading data from CP:S3 BUcket")
             cp_df = ut.read_from_s3(spark, src_conf) \
                 .withColumn('ins_dt', current_date())
 
@@ -63,8 +68,10 @@ if __name__ == '__main__':
                 .mode("overwrite") \
                 .partitionBy("ins_dt") \
                 .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
+            print("Data loading from CP:S3 Bucket is completed")
 
         elif src == 'ADDR':
+            print("Start reading data from Mongo DB")
             cust_addr_df = ut.read_from_mongo(spark,src_conf,app_secret) \
                 .withColumn('ins_dt', current_date())
 
@@ -84,5 +91,6 @@ if __name__ == '__main__':
                 .mode("overwrite") \
                 .partitionBy("ins_dt") \
                 .parquet("s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src)
+            print("Data loading from Mongo DB is completed")
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4,mysql:mysql-connector-java:8.0.15,com.springml:spark-sftp_2.11:1.1.1,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" com/pg/source_data_loading.py
