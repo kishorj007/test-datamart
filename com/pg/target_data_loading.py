@@ -62,8 +62,7 @@ if __name__ == '__main__':
 
 
     spark.sql("""SELECT 
-                   DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
-                   CHILD_ID, CHILD_DOB, CHILD_DECEASED, ins_dt
+                   DISTINCT consumer_id,mobile-no ,state    ,city     ,street,ins_dt
                 FROM
                   Address
                 WHERE
