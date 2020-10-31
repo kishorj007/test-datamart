@@ -44,14 +44,14 @@ if __name__ == '__main__':
     Customer_df.createOrReplaceTempView("CustomerPortal")
 
     spark.sql("select * from CustomerPortal").show(5, False)
-
+    
     spark.sql("""SELECT 
                    DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
                    REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, INS_DT
                 FROM
                   CustomerPortal
                 WHERE
-                  INS_DT = CURRENT_DATE""")\
+                  INS_DT = '2020-10-29'""")\
         .show(5, False)
 
 
@@ -67,4 +67,4 @@ if __name__ == '__main__':
 
     print("Completed   <<<<<<<<<")
 
-# spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4,mysql:mysql-connector-java:8.0.15,com.springml:spark-sftp_2.11:1.1.1,org.mongodb.spark:mongo-spark-connector_2.11:2.4.1" com/pg/target_data_loading.py
+# spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" com/pg/target_data_loading.py
