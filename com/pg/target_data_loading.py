@@ -38,7 +38,7 @@ if __name__ == '__main__':
     Customer_df.printSchema()
     Customer_df.show(5, False)
     Customer_df.createOrReplaceTempView("CustomerPortal")
-    print(current_date() - 2)
+    print(date_add(current_date() - 2))
 
     spark.sql("""SELECT 
                    DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
@@ -46,7 +46,7 @@ if __name__ == '__main__':
                 FROM
                   CustomerPortal
                 WHERE
-                  INS_DT = current_date()-2""")\
+                  INS_DT = '2020-10-29'""")\
         .show(5, False)
 
     # Read addr data for current date
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     Address_df.printSchema()
     Address_df.show(5, False)
     Address_df.createOrReplaceTempView("Address")
-    print(current_date() - 2)
+    print(date_add(current_date() - 2))
 
 
     spark.sql("""SELECT 
@@ -67,7 +67,7 @@ if __name__ == '__main__':
                 FROM
                   Address
                 WHERE
-                  INS_DT = current_date()-2""")\
+                  INS_DT = '2020-10-29'""")\
         .show(5, False)
 
 
