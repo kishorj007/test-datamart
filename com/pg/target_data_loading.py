@@ -28,23 +28,17 @@ if __name__ == '__main__':
     # create temp view on top of that
     # execute a spark sql query to get the dim table data
 
-    print("\nStart reading data from CP parque file")
-    src_list = app_conf['source_list']
 
-    #for src in src_list:
-    #    src_conf = app_conf[src]
+    # Read CP data for current date
+
+    print("\nStart reading data from CP parque file")
 
     Customer_file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + "CP"
     Customer_df = spark.sql("select * from parquet.`{}`".format(Customer_file_path))
-
     Customer_df.printSchema()
-
     Customer_df.show(5, False)
-
     Customer_df.createOrReplaceTempView("CustomerPortal")
 
-    spark.sql("select * from CustomerPortal").show(5, False)
-    
     spark.sql("""SELECT 
                    DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
                    REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL, REGIS_GENDER, REGIS_CITY, INS_DT
@@ -54,16 +48,17 @@ if __name__ == '__main__':
                   INS_DT = '2020-10-29'""")\
         .show(5, False)
 
+    # Read addr data for current date
+
+    print("\nStart reading data from Address parque file")
+
+    Address_file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + "ADDR"
+    Address_df = spark.sql("select * from parquet.`{}`".format(Customer_file_path))
+    Address_df.printSchema()
+    Address_df.show(5, False)
+    Address_df.createOrReplaceTempView("Address")
 
 
-    # df.coalesce(1).write \
-    #     .format("io.github.spark_redshift_community.spark.redshift") \
-    #     .option("url", jdbcUrl) \
-    #     .option("tempdir", "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp") \
-    #     .option("forward_spark_s3_credentials", "true") \
-    #     .option("dbtable", "PUBLIC.TXN_FCT") \
-    #     .mode("overwrite") \
-    #     .save()
 
     print("Completed   <<<<<<<<<")
 
