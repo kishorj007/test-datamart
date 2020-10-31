@@ -45,7 +45,7 @@ if __name__ == '__main__':
                 FROM
                   CustomerPortal
                 WHERE
-                  INS_DT = current_date()""")\
+                  INS_DT = current_date()-2""")\
         .show(5, False)
 
     # Read addr data for current date
@@ -59,7 +59,16 @@ if __name__ == '__main__':
     Address_df.createOrReplaceTempView("Address")
 
 
+    spark.sql("""SELECT 
+                   DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
+                   CHILD_ID, CHILD_DOB, CHILD_DECEASED, ins_dt
+                FROM
+                  Address
+                WHERE
+                  INS_DT = current_date()-2""")\
+        .show(5, False)
 
-    print("Completed   <<<<<<<<<")
+
+print("Completed   <<<<<<<<<")
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" com/pg/target_data_loading.py
