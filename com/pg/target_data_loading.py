@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
 
     spark.sql("""SELECT 
-                   DISTINCT consumer_id,mobile-no ,state    ,city     ,street,ins_dt
+                   DISTINCT consumer_id,'mobile-no' ,state    ,city     ,street,ins_dt
                 FROM
                   Address
                 WHERE
