@@ -73,8 +73,8 @@ if __name__ == '__main__':
     print("join examples")
 
     spark.sql("""SELECT 
-                   DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
-                   REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL,
+                   DISTINCT a.REGIS_CNSM_ID, CAST(a.REGIS_CTY_CODE AS SMALLINT), CAST(a.REGIS_ID AS INTEGER),
+                   a.REGIS_LTY_ID, a.REGIS_DATE, a.REGIS_CHANNEL,
                    CHILD_ID, CHILD_DOB, CHILD_DECEASED, ins_dt
                 FROM
                   CustomerPortal a join Address b
