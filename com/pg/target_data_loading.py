@@ -35,7 +35,7 @@ if __name__ == '__main__':
     #for src in src_list:
     #    src_conf = app_conf[src]
 
-    Customer_file_path = """s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + CP"""
+    Customer_file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "CP"
     Customer_df = spark.sql("select * from parquet.`{}`".format(Customer_file_path))
 
     Customer_df.printSchema()
