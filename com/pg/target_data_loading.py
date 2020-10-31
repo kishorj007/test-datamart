@@ -70,6 +70,16 @@ if __name__ == '__main__':
                   INS_DT = '2020-10-29'""")\
         .show(5, False)
 
+    print("join examples")
+
+    spark.sql("""SELECT 
+                   DISTINCT REGIS_CNSM_ID, CAST(REGIS_CTY_CODE AS SMALLINT), CAST(REGIS_ID AS INTEGER),
+                   REGIS_LTY_ID, REGIS_DATE, REGIS_CHANNEL,
+                   CHILD_ID, CHILD_DOB, CHILD_DECEASED, ins_dt
+                FROM
+                  CustomerPortal a join Address b
+                  on (a.REGIS_CNSM_ID=b.REGIS_CNSM_ID)""")\
+        .show(5, False)
 
 print("Completed   <<<<<<<<<")
 
