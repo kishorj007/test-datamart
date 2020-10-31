@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
     spark.sql("""SELECT 
                    DISTINCT a.REGIS_CNSM_ID, CAST(a.REGIS_CTY_CODE AS SMALLINT), CAST(a.REGIS_ID AS INTEGER),
-                   b.'mobile-no' , b.state, b.city,
+                    b.state, b.city,
                    b.street,b.ins_dt
                 FROM
                   CustomerPortal a join Address b
