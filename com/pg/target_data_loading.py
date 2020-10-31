@@ -54,7 +54,7 @@ if __name__ == '__main__':
     print("\nStart reading data from Address parque file")
 
     Address_file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + "ADDR"
-    Address_df = spark.sql("select * from parquet.`{}`".format(Customer_file_path))
+    Address_df = spark.sql("select * from parquet.`{}`".format(Address_file_path))
     Address_df.printSchema()
     Address_df.show(5, False)
     Address_df.createOrReplaceTempView("Address")
