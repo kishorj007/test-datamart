@@ -45,7 +45,7 @@ if __name__ == '__main__':
                 FROM
                   CustomerPortal
                 WHERE
-                  INS_DT = '2020-10-29'""")\
+                  INS_DT = current_date()""")\
         .show(5, False)
 
     # Read addr data for current date
