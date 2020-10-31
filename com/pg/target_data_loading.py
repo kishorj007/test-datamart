@@ -23,13 +23,12 @@ if __name__ == '__main__':
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
 
-    print("Writing txn_fact dataframe to AWS Redshift Table   >>>>>>>")
 
     # Read CP and addr data for current date
     # create temp view on top of that
     # execute a spark sql query to get the dim table data
 
-    print("\nStart reading data from CP:S3 BUcket")
+    print("\nStart reading data from CP parque file")
     src_list = app_conf['source_list']
 
     #for src in src_list:
