@@ -23,26 +23,23 @@ if __name__ == '__main__':
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
 
-    print("\nStart reading data from CP parque file")
+    tgt_list = app_conf['target_list']
 
-    Customer_file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + "CP"
-    Customer_df = spark.sql("select * from parquet.`{}`".format(Customer_file_path))
-    Customer_df.printSchema()
-    Customer_df.show(5, False)
-    Customer_df.createOrReplaceTempView("CustomerPortal")
+    for tgt in tgt_list:
+        tgt_conf = app_conf[tgt]
 
-    print("\nStart reading data from Address parque file")
+        if tgt == 'SB':
+            src_list = tgt_conf['sourceData']
+            for src in src_list:
+                file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src
+                src_df = spark.sql("select * from parquet.`{}`".format(file_path))
+                src_df.printSchema()
+                src_df.show(5, False)
+                src_df.createOrReplaceTempView(src)
 
-    Address_file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + "ADDR"
-    Address_df = spark.sql("select * from parquet.`{}`".format(Address_file_path))
-    Address_df.printSchema()
-    Address_df.show(5, False)
-    Address_df.createOrReplaceTempView("Address")
+        print("REGIS_DIM")
 
-
-    print("join examples")
-
-    spark.sql(app_conf["REGIS_DIM"]["loadingQuery"]) \
-        .show(5, False)
+        regis_dim = spark.sql(app_conf["REGIS_DIM"]["loadingQuery"])
+        regis_dim.show(5, False)
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" com/pg/target_data_loading.py
