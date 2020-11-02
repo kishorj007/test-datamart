@@ -42,7 +42,7 @@ REGIS_DIM:
                 b.state, b.city, b.street, a.ins_dt
             FROM
                 CustomerPortal a join Address b
-                    on a.REGIS_LTY_ID=b.consumer_id
+                    on a.REGIS_CNSM_ID=b.consumer_id
             ) cp
 
 
