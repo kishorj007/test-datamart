@@ -28,7 +28,7 @@ if __name__ == '__main__':
     for tgt in tgt_list:
         tgt_conf = app_conf[tgt]
 
-        if tgt == 'SB':
+        if tgt == 'REGIS_DIM':
             src_list = tgt_conf['sourceData']
             for src in src_list:
                 file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src
@@ -37,9 +37,9 @@ if __name__ == '__main__':
                 src_df.show(5, False)
                 src_df.createOrReplaceTempView(src)
 
-        print("REGIS_DIM")
+            print("REGIS_DIM")
 
-        regis_dim = spark.sql(app_conf["REGIS_DIM"]["loadingQuery"])
-        regis_dim.show(5, False)
+            regis_dim = spark.sql(app_conf["REGIS_DIM"]["loadingQuery"])
+            regis_dim.show(5, False)
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" com/pg/target_data_loading.py
