@@ -45,7 +45,7 @@ REGIS_DIM:
                 a.REGIS_LTY_ID, a.REGIS_DATE, a.REGIS_CHANNEL, a.REGIS_GENDER, a.REGIS_CITY,
                 b.state, b.city, b.street, a.ins_dt
             FROM
-                CustomerPortal a join Address b
+                CP a join ADDR b
                     on a.REGIS_CNSM_ID=b.consumer_id
             ) cp
 
