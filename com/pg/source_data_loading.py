@@ -64,6 +64,8 @@ if __name__ == '__main__':
             cp_df = ut.read_from_s3(spark, src_conf) \
                 .withColumn('ins_dt', current_date())
 
+            cp_df.show()
+
             cp_df.write \
                 .mode("overwrite") \
                 .partitionBy("ins_dt") \
