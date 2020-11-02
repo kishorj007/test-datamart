@@ -71,15 +71,20 @@ if __name__ == '__main__':
 
     print("join examples")
 
-    spark.sql("""SELECT 
-                   DISTINCT a.REGIS_CNSM_ID, CAST(a.REGIS_CTY_CODE AS SMALLINT), CAST(a.REGIS_ID AS INTEGER),
-                    b.state, b.city,
-                   b.street,b.ins_dt
-                FROM
-                  CustomerPortal a join Address b
-                  on (a.REGIS_CNSM_ID=b.consumer_id)""")\
-        .show(5, False)
+#     spark.sql("""SELECT
+#                     DISTINCT a.REGIS_CNSM_ID, CAST(a.REGIS_CTY_CODE AS SMALLINT), CAST(a.REGIS_ID AS INTEGER),
+#                    a.REGIS_LTY_ID, a.REGIS_DATE, a.REGIS_CHANNEL, a.REGIS_GENDER, a.REGIS_CITY,
+#                     b.state, b.city,
+#                    b.street,b.ins_dt
+#                 FROM
+#                   CustomerPortal a join Address b
+#                   on (a.REGIS_LTY_ID=b.consumer_id)""")\
+#         .show(5, False)
+#
+# print("Completed   <<<<<<<<<")
 
-print("Completed   <<<<<<<<<")
+
+spark.sql(app_conf["REGIS_DIM"]["loadingQuery"]) \
+        .show(5, False)
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" com/pg/target_data_loading.py
