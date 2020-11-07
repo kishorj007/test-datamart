@@ -54,11 +54,19 @@ if __name__ == '__main__':
             regis_dim = spark.sql(app_conf["REGIS_DIM"]["loadingQuery"])
             regis_dim.show(5, False)
 
-            # write an udf to generate a unique number
-            # write this df to redshift
+            regis_dim.coalesce(1).write \
+                .format("io.github.spark_redshift_community.spark.redshift") \
+                .option("url", ut.get_redshift_jdbc_url()) \
+                .option("tempdir", "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp") \
+                .option("forward_spark_s3_credentials", "true") \
+                .option("dbtable", "PUBLIC.TXN_FCT") \
+                .mode("overwrite") \
+                .save()
 
         elif tgt == 'CHILD_DIM':
             print('CHILD_DIM')
+
+
 
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" com/pg/target_data_loading.py

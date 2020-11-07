@@ -6,7 +6,6 @@ source_list:
 
 target_list:
   - REGIS_DIM
-  - CHILD_DIM
 
 SB:
   mysql_conf:
@@ -59,7 +58,6 @@ s3_conf:
 redshift_conf:
   filetype: csv
   delimiter: |
-  dbtable: PUBLIC.TXN_FCT
-  query: SELECT txn_id, create_time, amount, cust_id from PUBLIC.TXN_FCT
+  dbtable: DATAMART.REGIS_DIM
 
 
