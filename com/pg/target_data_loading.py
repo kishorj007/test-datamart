@@ -36,7 +36,7 @@ if __name__ == '__main__':
     tgt_list = app_conf['target_list']
     df = spark.createDataFrame([1, 2], IntegerType())
     df.createOrReplaceTempView("df")
-    spark.sql("select id, FN_UUID() uuid from df").show()
+    spark.sql("select *, FN_UUID() uuid from df").show()
     for tgt in tgt_list:
         tgt_conf = app_conf[tgt]
 
