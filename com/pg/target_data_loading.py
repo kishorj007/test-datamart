@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 import yaml
 import os.path
-from pyspark.sql.types import StringType
+from pyspark.sql.types import *
 import uuid
 import com.pg.utils.utility as ut
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
         .register("FN_UUID", fn_uuid, StringType())
 
     tgt_list = app_conf['target_list']
-    df = spark.sparkContext.parallelize([1, 2]).toDF(["id"])
+    df = spark.createDataFrame([1, 2], IntegerType())
     df.createOrReplaceTempView("df")
     spark.sql("select id, FN_UUID() uuid from df").show()
     for tgt in tgt_list:
