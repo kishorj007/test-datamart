@@ -2,6 +2,8 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 import yaml
 import os.path
+from pyspark.sql.types import StringType
+import uuid
 import com.pg.utils.utility as ut
 
 if __name__ == '__main__':
@@ -23,6 +25,13 @@ if __name__ == '__main__':
         .getOrCreate()
     spark.sparkContext.setLogLevel('ERROR')
 
+    def fn_uuid():
+        uid = uuid.uuid1()
+        return uid
+
+    FN_UUID = spark.udf \
+        .register("FN_UUID", fn_uuid, StringType())
+
     tgt_list = app_conf['target_list']
 
     for tgt in tgt_list:
@@ -41,5 +50,12 @@ if __name__ == '__main__':
 
             regis_dim = spark.sql(app_conf["REGIS_DIM"]["loadingQuery"])
             regis_dim.show(5, False)
+
+            # write an udf to generate a unique number
+            # write this df to redshift
+
+        elif tgt == 'CHILD_DIM':
+            print('CHILD_DIM')
+
 
 # spark-submit --packages "org.apache.hadoop:hadoop-aws:2.7.4" com/pg/target_data_loading.py
