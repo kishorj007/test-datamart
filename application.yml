@@ -63,7 +63,7 @@ CHILD_DIM:
        FROM
           CP
        WHERE
-          CAST(INS_TS AS DATE) = '2020-11-02'
+          CAST(ins_dt AS DATE) = '2020-11-02'
           AND CHILD_ID IS NOT NULL
       ) CP
 
