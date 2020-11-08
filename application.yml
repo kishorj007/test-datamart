@@ -61,9 +61,9 @@ CHILD_DIM:
        FROM
            (SELECT DISTINCT REGIS_CNSM_ID, REGIS_CTY_CODE, CHILD_ID, CHILD_NB, CHILD_GENDER, current_Timestamp
        FROM
-          STAGING_STG_1CP
+          CP
        WHERE
-          CAST(INS_TS AS DATE) = CURRENT_DATE
+          CAST(INS_TS AS DATE) = '2020-11-02'
           AND CHILD_ID IS NOT NULL
       ) CP
 

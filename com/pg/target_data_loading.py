@@ -68,7 +68,7 @@ if __name__ == '__main__':
                 src_df.show(5, False)
                 src_df.createOrReplaceTempView(src)
 
-            child_dim = spark.sql(app_conf["REGIS_DIM"]["loadingQuery"])
+            child_dim = spark.sql(app_conf["CHILD_DIM"]["loadingQuery"])
             child_dim.show(5, False)
 
             ut.write_to_redshift(child_dim.coalesce(1),
