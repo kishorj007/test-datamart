@@ -51,7 +51,7 @@ if __name__ == '__main__':
             regis_dim = spark.sql(app_conf["REGIS_DIM"]["loadingQuery"])
             regis_dim.show(5, False)
 
-            regis_dim.write_to_redshift(regis_dim.coalesce(1),
+            ut.write_to_redshift(regis_dim.coalesce(1),
                                         app_secret,
                                         "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
                                         tgt_conf['tableName'])
