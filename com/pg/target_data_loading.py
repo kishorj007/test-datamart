@@ -38,6 +38,7 @@ if __name__ == '__main__':
         tgt_conf = app_conf[tgt]
 
         if tgt == 'REGIS_DIM':
+            print("REGIS_DIM")
             src_list = tgt_conf['sourceData']
             for src in src_list:
                 file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src
@@ -48,16 +49,33 @@ if __name__ == '__main__':
 
             print("REGIS_DIM")
 
-            regis_dim = spark.sql(app_conf["REGIS_DIM"]["loadingQuery"])
+            regis_dim = spark.sql(tgt_conf["loadingQuery"])
             regis_dim.show(5, False)
 
             ut.write_to_redshift(regis_dim.coalesce(1),
-                                        app_secret,
-                                        "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
-                                        tgt_conf['tableName'])
+                                 app_secret,
+                                 "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
+                                 tgt_conf['tableName'])
 
         elif tgt == 'CHILD_DIM':
-            print('CHILD_DIM')
+            print("CHILD_DIM")
+
+            src_list = tgt_conf['sourceData']
+            for src in src_list:
+                file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"]["staging_dir"] + "/" + src
+                src_df = spark.sql("select * from parquet.`{}`".format(file_path))
+                src_df.printSchema()
+                src_df.show(5, False)
+                src_df.createOrReplaceTempView(src)
+
+            child_dim = spark.sql(app_conf["REGIS_DIM"]["loadingQuery"])
+            child_dim.show(5, False)
+
+            ut.write_to_redshift(child_dim.coalesce(1),
+                                 app_secret,
+                                 "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
+                                 tgt_conf['tableName'])
+
 
 
 

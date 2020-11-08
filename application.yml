@@ -5,7 +5,8 @@ source_list:
   - ADDR
 
 target_list:
-  - REGIS_DIM
+#  - REGIS_DIM
+  - CHILD_DIM
 
 SB:
   mysql_conf:
