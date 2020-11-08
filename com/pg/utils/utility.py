@@ -57,6 +57,9 @@ def read_from_mongo(spark, app_conf,app_secret):
 
      return df
 
+
+
+
 def get_redshift_jdbc_url(redshift_config: dict):
     host = redshift_config["redshift_conf"]["host"]
     port = redshift_config["redshift_conf"]["port"]
@@ -65,6 +68,17 @@ def get_redshift_jdbc_url(redshift_config: dict):
     password = redshift_config["redshift_conf"]["password"]
     return "jdbc:redshift://{}:{}/{}?user={}&password={}".format(host, port, database, username, password)
 
+
+def write_to_redshift(regis_dm, app_secret, s3_temp_dir, table_name):
+        dm = regis_dm.write \
+            .format("io.github.spark_redshift_community.spark.redshift") \
+            .option("url", get_redshift_jdbc_url(app_secret)) \
+            .option("tempdir", s3_temp_dir) \
+            .option("forward_spark_s3_credentials", "true") \
+            .option("dbtable", "DATAMART.REGIS_DIM") \
+            .mode("overwrite") \
+            .save()
+        return dm
 
 def get_mysql_jdbc_url(mysql_config: dict):
     host = mysql_config["mysql_conf"]["hostname"]
