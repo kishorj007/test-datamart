@@ -75,7 +75,7 @@ def write_to_redshift(regis_dm, app_secret, s3_temp_dir, table_name):
             .option("url", get_redshift_jdbc_url(app_secret)) \
             .option("tempdir", s3_temp_dir) \
             .option("forward_spark_s3_credentials", "true") \
-            .option("dbtable", "DATAMART.CHILD_DIM") \
+            .option("dbtable", table_name) \
             .mode("overwrite") \
             .save()
         return dm

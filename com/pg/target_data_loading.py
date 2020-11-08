@@ -76,6 +76,23 @@ if __name__ == '__main__':
                                  "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
                                  tgt_conf['tableName'])
 
+        elif tgt == 'RTL_TXN_FACT':
+
+            print("TRX_Fact")
+
+            src_list = tgt_conf['sourceData']
+            for src in src_list:
+                file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"][
+                    "staging_dir"] + "/" + src
+                src_df = spark.sql("select * from parquet.`{}`".format(file_path))
+                src_df.printSchema()
+                src_df.show(5, False)
+                src_df.createOrReplaceTempView(src)
+
+            child_dim = spark.sql(app_conf["RTL_TXN_FACT"]["loadingQuery"])
+            child_dim.show(5, False)
+
+
 
 
 
