@@ -95,9 +95,7 @@ if __name__ == '__main__':
                 src_df.createOrReplaceTempView(src)
 
             src_tbl = tgt_conf['sourceTable']
-            for src in src_list:
-                # read that table from redshift and create a temp view on that
-
+            for src in src_tbl:
                 jdbcUrl = ut.get_redshift_jdbc_url(app_secret)
                 print(jdbcUrl)
                 txnDf = spark.read \
