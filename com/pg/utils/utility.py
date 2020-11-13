@@ -80,6 +80,15 @@ def write_to_redshift(regis_dm, app_secret, s3_temp_dir, table_name):
             .save()
         return dm
 
+def read_from_redshift(app_config,app_secret,s3_temp_dir,spark,table_name):
+        txnDf = spark.read \
+                    .format("io.github.spark_redshift_community.spark.redshift") \
+                    .option("url", get_redshift_jdbc_url(app_secret)) \
+                    .option("dbtable", table_name) \
+                    .option("forward_spark_s3_credentials", "true") \
+                    .option("tempdir", s3_temp_dir) \
+                    .load()
+
 
 def get_mysql_jdbc_url(mysql_config: dict):
     host = mysql_config["mysql_conf"]["hostname"]

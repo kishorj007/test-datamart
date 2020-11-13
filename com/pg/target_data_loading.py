@@ -98,16 +98,10 @@ if __name__ == '__main__':
             for src in src_tbl:
                 jdbcUrl = ut.get_redshift_jdbc_url(app_secret)
                 print(jdbcUrl)
-                txnDf = spark.read \
-                    .format("io.github.spark_redshift_community.spark.redshift") \
-                    .option("url", jdbcUrl) \
-                    .option("dbtable", src) \
-                    .option("forward_spark_s3_credentials", "true") \
-                    .option("tempdir", "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp") \
-                    .load()
+                txnDf=ut.read_from_redshift()
 
-                # txnDf.printSchema()
-                # txnDf.show(5, False)
+                txnDf.printSchema()
+                txnDf.show(5, False)
                 txnDf.createOrReplaceTempView(src.split('.')[1])
 
             child_dim = spark.sql(tgt_conf['loadingQuery'])
