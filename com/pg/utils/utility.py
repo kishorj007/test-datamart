@@ -69,26 +69,25 @@ def get_redshift_jdbc_url(redshift_config: dict):
     return "jdbc:redshift://{}:{}/{}?user={}&password={}".format(host, port, database, username, password)
 
 
-def write_to_redshift(regis_dm, app_secret, s3_temp_dir, table_name):
-        dm = regis_dm.write \
-            .format("io.github.spark_redshift_community.spark.redshift") \
-            .option("url", get_redshift_jdbc_url(app_secret)) \
-            .option("tempdir", s3_temp_dir) \
-            .option("forward_spark_s3_credentials", "true") \
-            .option("dbtable", table_name) \
-            .mode("overwrite") \
-            .save()
-        return dm
+def write_to_redshift(dataframe, app_secret, s3_temp_dir, table_name):
+    dataframe.write \
+        .format("io.github.spark_redshift_community.spark.redshift") \
+        .option("url", get_redshift_jdbc_url(app_secret)) \
+        .option("tempdir", s3_temp_dir) \
+        .option("forward_spark_s3_credentials", "true") \
+        .option("dbtable", table_name) \
+        .mode("overwrite") \
+        .save()
 
-def read_from_redshift(app_config,app_secret,s3_temp_dir,spark,table_name):
-        txnDf = spark.read \
-                    .format("io.github.spark_redshift_community.spark.redshift") \
-                    .option("url", get_redshift_jdbc_url(app_secret)) \
-                    .option("dbtable", table_name) \
-                    .option("forward_spark_s3_credentials", "true") \
-                    .option("tempdir", s3_temp_dir) \
-                    .load()
-
+def read_from_redshift(app_secret, s3_temp_dir, spark, table_name):
+    df = spark.read \
+                .format("io.github.spark_redshift_community.spark.redshift") \
+                .option("url", get_redshift_jdbc_url(app_secret)) \
+                .option("dbtable", table_name) \
+                .option("forward_spark_s3_credentials", "true") \
+                .option("tempdir", s3_temp_dir) \
+                .load()
+    return df
 
 def get_mysql_jdbc_url(mysql_config: dict):
     host = mysql_config["mysql_conf"]["hostname"]
