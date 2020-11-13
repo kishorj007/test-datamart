@@ -94,14 +94,12 @@ if __name__ == '__main__':
                 # src_df.show(5, False)
                 src_df.createOrReplaceTempView(src)
 
+            s3_temp_dir = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp"
             src_tbl = tgt_conf['sourceTable']
             for src in src_tbl:
                 jdbcUrl = ut.get_redshift_jdbc_url(app_secret)
                 print(jdbcUrl)
-                txnDf =ut.read_from_redshift(spark,
-                                             app_secret,
-                                             "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
-                                             src)
+                txnDf =ut.read_from_redshift(spark, app_secret, s3_temp_dir, src)
                 # txnDf.printSchema()
                 # txnDf.show(5, False)
                 txnDf.createOrReplaceTempView(src.split('.')[1])
@@ -109,7 +107,7 @@ if __name__ == '__main__':
             child_dim = spark.sql(tgt_conf['loadingQuery'])
             child_dim.show(5, False)
 
-            ut.write_to_redshift(child_dim.coalesce(1))
+            ut.write_to_redshift(child_dim.coalesce(1), app_secret, s3_temp_dir, tgt_conf['tableName'])
 
 
 
