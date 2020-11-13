@@ -102,14 +102,14 @@ if __name__ == '__main__':
                                              app_secret,
                                              "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
                                              src)
-
-                txnDf.printSchema()
-                txnDf.show(5, False)
+                # txnDf.printSchema()
+                # txnDf.show(5, False)
                 txnDf.createOrReplaceTempView(src.split('.')[1])
 
             child_dim = spark.sql(tgt_conf['loadingQuery'])
             child_dim.show(5, False)
 
+            ut.write_to_redshift(child_dim.coalesce(1))
 
 
 
