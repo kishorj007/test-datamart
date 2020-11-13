@@ -98,7 +98,10 @@ if __name__ == '__main__':
             for src in src_tbl:
                 jdbcUrl = ut.get_redshift_jdbc_url(app_secret)
                 print(jdbcUrl)
-                txnDf=ut.read_from_redshift(app_secret, "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp", spark, tgt_conf['sourceTable'])
+                txnDf =ut.read_from_redshift(spark,
+                                             app_secret,
+                                             "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp",
+                                             src)
 
                 txnDf.printSchema()
                 txnDf.show(5, False)

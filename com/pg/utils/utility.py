@@ -79,7 +79,7 @@ def write_to_redshift(dataframe, app_secret, s3_temp_dir, table_name):
         .mode("overwrite") \
         .save()
 
-def read_from_redshift(app_secret, s3_temp_dir, spark, table_name):
+def read_from_redshift(spark, app_secret, s3_temp_dir, table_name):
     df = spark.read \
                 .format("io.github.spark_redshift_community.spark.redshift") \
                 .option("url", get_redshift_jdbc_url(app_secret)) \
