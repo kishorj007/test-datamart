@@ -90,8 +90,8 @@ if __name__ == '__main__':
                 file_path = "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/" + app_conf["s3_conf"][
                     "staging_dir"] + "/" + src
                 src_df = spark.sql("select * from parquet.`{}`".format(file_path))
-                src_df.printSchema()
-                src_df.show(5, False)
+                # src_df.printSchema()
+                # src_df.show(5, False)
                 src_df.createOrReplaceTempView(src)
 
             src_tbl = tgt_conf['sourceTable']
@@ -103,7 +103,7 @@ if __name__ == '__main__':
                 txnDf = spark.read \
                     .format("io.github.spark_redshift_community.spark.redshift") \
                     .option("url", jdbcUrl) \
-                    .option("query", src) \
+                    .option("dbtable", src) \
                     .option("forward_spark_s3_credentials", "true") \
                     .option("tempdir", "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp") \
                     .load()
