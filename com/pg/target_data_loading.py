@@ -89,6 +89,26 @@ if __name__ == '__main__':
                 src_df.show(5, False)
                 src_df.createOrReplaceTempView(src)
 
+            src_tbl = tgt_conf['sourceTable']
+            for src in src_list:
+                # read that table from redshift and create a temp view on that
+
+                jdbcUrl = ut.get_redshift_jdbc_url(app_secret)
+                print(jdbcUrl)
+                txnDf = spark.read \
+                    .format("io.github.spark_redshift_community.spark.redshift") \
+                    .option("url", jdbcUrl) \
+                    .option("query", app_conf["RTL_TXN_FACT"]["loadingQuery"]) \
+                    .option("forward_spark_s3_credentials", "true") \
+                    .option("tempdir", "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp") \
+                    .load()
+
+                txnDf.show(5, False)
+
+                src_df.printSchema()
+                src_df.show(5, False)
+                src_df.createOrReplaceTempView(src)
+
             child_dim = spark.sql(app_conf["RTL_TXN_FACT"]["loadingQuery"])
             child_dim.show(5, False)
 
