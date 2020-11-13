@@ -106,8 +106,8 @@ if __name__ == '__main__':
                     .option("tempdir", "s3a://" + app_conf["s3_conf"]["s3_bucket"] + "/temp") \
                     .load()
 
-                txnDf.printSchema()
-                txnDf.show(5, False)
+                # txnDf.printSchema()
+                # txnDf.show(5, False)
                 txnDf.createOrReplaceTempView(src.split('.')[1])
 
             child_dim = spark.sql(tgt_conf['loadingQuery'])
